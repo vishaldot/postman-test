@@ -1,0 +1,12 @@
+{
+  "name": "collection",
+  "version": "1.0.0",
+  "description": "project for storing postman test result",
+    "scripts": {
+    "api-tests-production": "newman run tests/Liftv2API.json"
+  },
+  "author": "Vishal Gondalia",
+  "dependencies": {
+    "newman": "^4.5.5"
+  }
+}

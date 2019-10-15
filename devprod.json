@@ -1,0 +1,119 @@
+{
+	"info": {
+		"_postman_id": "cbfed68f-f835-4582-b45b-811e6f99b2d7",
+		"name": "dev.prod latest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "https://dev.prod.lift.co/api/users?query={ \"city\": \"Toronto\", \"isAnonymous\": \"false\", \"reputation\": { \"$gt\": 50 } }&sort=reputation-, lastonline-&op=&per_page=5&page=3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "af37ff15-3250-4c8c-846d-5f28e4ae850a",
+						"exec": [
+							"//test case pass result",
+							"pm.test(\"Test run pass with status code 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"//checking response time of the API",
+							"pm.test(\"Response time is less than 1000ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});",
+							"//Checking content type",
+							"pm.test(\"This API have content type present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"//String matching in API response",
+							"pm.test(\"Body matches string - role: user\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"user\");",
+							"});",
+							"pm.test(\"Body matches string - reviewCount\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"reviewCount\");",
+							"});",
+							"//Json value validator for API for user is suspended or not",
+							"var jsonData = pm.response.json();",
+							"var jsonDataValue=jsonData['hits'];",
+							"var suspendedValue=jsonDataValue[0]['suspended'];",
+							" ",
+							"pm.test(\"User suspension check\", function(){",
+							"    console.log(\"data:\"+suspendedValue);",
+							"    pm.expect(false).to.be.eql(suspendedValue);",
+							"});",
+							"// Verify target string is available",
+							" pm.test(\"Check if pattern is in target string\",function () {",
+							"     pm.expect('username').to.have.string('name');",
+							"      ",
+							" });",
+							"//Verify counts of review",
+							"const reviewCount = 6;",
+							"  pm.test('Check if number is equal to 6', function () {",
+							"      pm.expect(reviewCount).to.equal(6);",
+							"      console.log(\"reviewCount:\" + reviewCount);",
+							"  });",
+							"  ",
+							"  ",
+							"  ",
+							"  ",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjgwNzQ2LCJpYXQiOjE1NzEwMzkyNjN9.50AQs0GZKNk9KGNOffyNNEh5V45EG5dar2qv6Gfn9xg"
+					}
+				],
+				"url": {
+					"raw": "https://dev.prod.lift.co/api/users?query=%7B%20%22city%22%3A%20%22Toronto%22%2C%20%22isAnonymous%22%3A%20%22false%22%2C%20%22reputation%22%3A%20%7B%20%22%24gt%22%3A%2050%20%7D%20%7D&sort=reputation-, lastonline-&op=&per_page=5&page=3",
+					"protocol": "https",
+					"host": [
+						"dev",
+						"prod",
+						"lift",
+						"co"
+					],
+					"path": [
+						"api",
+						"users"
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": "%7B%20%22city%22%3A%20%22Toronto%22%2C%20%22isAnonymous%22%3A%20%22false%22%2C%20%22reputation%22%3A%20%7B%20%22%24gt%22%3A%2050%20%7D%20%7D"
+						},
+						{
+							"key": "sort",
+							"value": "reputation-, lastonline-"
+						},
+						{
+							"key": "op",
+							"value": ""
+						},
+						{
+							"key": "per_page",
+							"value": "5"
+						},
+						{
+							"key": "page",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
