@@ -1,0 +1,408 @@
+{
+	"info": {
+		"_postman_id": "cbfed68f-f835-4582-b45b-811e6f99b2d7",
+		"name": "dev.prod latest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "https://dev.prod.lift.co/api/users?query={ \"city\": \"Toronto\", \"isAnonymous\": \"false\", \"reputation\": { \"$gt\": 50 } }&sort=reputation-, lastonline-&op=&per_page=5&page=3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "af37ff15-3250-4c8c-846d-5f28e4ae850a",
+						"exec": [
+							"//test case pass result",
+							"pm.test(\"Test run pass with status code 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"//checking response time of the API",
+							"pm.test(\"Response time is less than 2000ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+							"});",
+							"//Checking content type",
+							"pm.test(\"This API have content type present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"//String matching in API response",
+							"pm.test(\"Body matches string - role: user\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"user\");",
+							"});",
+							"pm.test(\"Body matches string - reviewCount\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"reviewCount\");",
+							"});",
+							"//Json value validator for API for user is suspended or not",
+							"var jsonData = pm.response.json();",
+							"var jsonDataValue=jsonData['hits'];",
+							"var suspendedValue=jsonDataValue[0]['suspended'];",
+							" ",
+							"pm.test(\"User suspension check\", function(){",
+							"    console.log(\"data:\"+suspendedValue);",
+							"    pm.expect(false).to.be.eql(suspendedValue);",
+							"});",
+							"// Verify target string is available",
+							" pm.test(\"Check if pattern is in target string\",function () {",
+							"     pm.expect('username').to.have.string('name');",
+							"      ",
+							" });",
+							"//Verify counts of review",
+							"const reviewCount = 6;",
+							"  pm.test('Check if number is equal to 6', function () {",
+							"      pm.expect(reviewCount).to.equal(6);",
+							"      console.log(\"reviewCount:\" + reviewCount);",
+							"  });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjgwNzQ2LCJpYXQiOjE1NzEwMzkyNjN9.50AQs0GZKNk9KGNOffyNNEh5V45EG5dar2qv6Gfn9xg"
+					}
+				],
+				"url": {
+					"raw": "https://dev.prod.lift.co/api/users?query=%7B%20%22city%22%3A%20%22Toronto%22%2C%20%22isAnonymous%22%3A%20%22false%22%2C%20%22reputation%22%3A%20%7B%20%22%24gt%22%3A%2050%20%7D%20%7D&sort=reputation-, lastonline-&op=&per_page=5&page=3",
+					"protocol": "https",
+					"host": [
+						"dev",
+						"prod",
+						"lift",
+						"co"
+					],
+					"path": [
+						"api",
+						"users"
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": "%7B%20%22city%22%3A%20%22Toronto%22%2C%20%22isAnonymous%22%3A%20%22false%22%2C%20%22reputation%22%3A%20%7B%20%22%24gt%22%3A%2050%20%7D%20%7D"
+						},
+						{
+							"key": "sort",
+							"value": "reputation-, lastonline-"
+						},
+						{
+							"key": "op",
+							"value": ""
+						},
+						{
+							"key": "per_page",
+							"value": "5"
+						},
+						{
+							"key": "page",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://dev.prod.lift.co/api/users/password-reset",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "368f06a5-de60-4f74-89b4-e8910719fe83",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    });",
+							"    ",
+							"pm.test(\"Response time of the API 1500ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1500);",
+							"});    ",
+							"",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");",
+							" ",
+							"tests[\"Has Content-Type\"] = contentTypeHeaderExists;",
+							" ",
+							"if (contentTypeHeaderExists) {",
+							"    tests[\"Content-Type is application/json\"] = ",
+							"      responseHeaders[\"Content-Type\"].has(\"application/json\");",
+							"}",
+							"",
+							"",
+							"var status = pm.response.status;",
+							"//console.log(status);",
+							"pm.test(\"Body matches string\", function () {",
+							"    ",
+							"    if(status == \"OK\"){",
+							"    //postman.SetEnvironmentVariable(\"status\", \"Everything is fine\");",
+							"    pm.expect(pm.response.text()).to.include(\"Please check your email for a link to reset your password\");",
+							"    //system.out.println(\"Getting success message\");",
+							"    console.log(\"Please check your email for a link to reset your password\");",
+							"    }else",
+							"    {",
+							"        pm.expect(pm.response.text()).to.include(\"No user with this email or username exists\");",
+							"        console.log(\"No user with this email or username exists\");",
+							"        // system.out.println(\"Getting unsuccess message\");",
+							"        ",
+							"    }",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic emFja0BsaWZ0LmNvOmFhYWFhYQ==",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\": \"terry.kdtest@gmail.com\"}"
+				},
+				"url": {
+					"raw": "https://dev.prod.lift.co/api/users/password-reset?email=raul.kdtest@gmail.com",
+					"protocol": "https",
+					"host": [
+						"dev",
+						"prod",
+						"lift",
+						"co"
+					],
+					"path": [
+						"api",
+						"users",
+						"password-reset"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "raul.kdtest@gmail.com"
+						}
+					]
+				},
+				"description": "Reset Password"
+			},
+			"response": []
+		},
+		{
+			"name": "https://dev.prod.lift.co/api/users/register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "45f897f6-bb80-4734-9be3-05956ba7c40a",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"//Json value validator for API for user is suspended or not",
+							"var jsonData = pm.response.json();",
+							"//var jsonDataValue=jsonData['hits'];",
+							"var suspendedValue=jsonData['suspended'];",
+							" ",
+							"pm.test(\"User suspension check\", function(){",
+							"    console.log(\"data:\"+suspendedValue);",
+							"    pm.expect(false).to.be.eql(suspendedValue);",
+							"});",
+							"//Verify counts of review",
+							"const reviewCount = 0;",
+							"  pm.test('Check if number is equal to 0', function () {",
+							"      pm.expect(reviewCount).to.equal(0);",
+							"      console.log(\"reviewCount:\" + reviewCount);",
+							"  });",
+							"  // receipt count should be 0",
+							"  const receiptCount = 0;",
+							"  pm.test('Check if number is equal to 0', function () {",
+							"      pm.expect(receiptCount).to.equal(0);",
+							"      console.log(\"receiptCount:\" + receiptCount);",
+							"  });",
+							"  const helpfulReviewCount = 0;",
+							"  pm.test('Check if number is equal to 0', function () {",
+							"      pm.expect(helpfulReviewCount).to.equal(0);",
+							"      console.log(\"helpfulReviewCount:\" + helpfulReviewCount);",
+							"  });",
+							"  const businessReviewCount = 0;",
+							"  pm.test('Check if number is equal to 0', function () {",
+							"      pm.expect(businessReviewCount).to.equal(0);",
+							"      console.log(\"businessReviewCount:\" + businessReviewCount);",
+							"  });",
+							"  const helpfulBusinessReviewCount = 0;",
+							"  pm.test('Check if number is equal to 0', function () {",
+							"      pm.expect(helpfulBusinessReviewCount).to.equal(0);",
+							"      console.log(\"helpfulBusinessReviewCount:\" + helpfulBusinessReviewCount);",
+							"  });",
+							"  const reputation = 0;",
+							"  pm.test('Check if number is equal to 0', function () {",
+							"      pm.expect(reputation).to.equal(0);",
+							"      console.log(\"reputation:\" + reputation);",
+							"  });",
+							"  const redeemedPoint = 0;",
+							"  pm.test('Check if number is equal to 0', function () {",
+							"      pm.expect(redeemedPoint).to.equal(0);",
+							"      console.log(\"redeemedPoint:\" + redeemedPoint);",
+							"  });",
+							"  //============================== String validation================================",
+							"  // Author: Raul Dietrich",
+							"  // Date: 16 Oct 2019",
+							"  ",
+							"// Verify target string is available",
+							" pm.test(\"Field username is available\",function () {",
+							"     pm.expect('username').to.have.string('name');",
+							"     });",
+							"     ",
+							" pm.test(\"Field role is available\",function () {",
+							"     pm.expect('role').to.have.string('role');",
+							"     });",
+							"pm.test(\"Field rewards enabled is available\",function () {",
+							"     pm.expect('rewardsEnabled').to.have.string('rewardsEnabled');",
+							"     });",
+							"pm.test(\"Field review count is available\",function () {",
+							"     pm.expect('reviewCount').to.have.string('reviewCount');",
+							"     });",
+							"pm.test(\"Field helpful review count is available\",function () {",
+							"     pm.expect('helpfulReviewCount').to.have.string('helpfulReviewCount');",
+							"     });",
+							"pm.test(\"Field business review count is available\",function () {",
+							"     pm.expect('businessReviewCount').to.have.string('businessReviewCount');",
+							"     });",
+							"pm.test(\"Field helpful business review count is available\",function () {",
+							"     pm.expect('helpfulBusinessReviewCount').to.have.string('helpfulBusinessReviewCount');",
+							"     });",
+							"pm.test(\"Field receipt count is available\",function () {",
+							"     pm.expect('receiptCount').to.have.string('receiptCount');",
+							"     });",
+							"pm.test(\"Field anonymous is available\",function () {",
+							"     pm.expect('isAnonymous').to.have.string('isAnonymous');",
+							"     });",
+							"pm.test(\"Field reputation is available\",function () {",
+							"     pm.expect('reputation').to.have.string('reputation');",
+							"     });",
+							"pm.test(\"Field known conditions is available\",function () {",
+							"     pm.expect('knownConditions').to.have.string('knownConditions');",
+							"     });",
+							"pm.test(\"Field profile completion is available\",function () {",
+							"     pm.expect('profileCompletion').to.have.string('profileCompletion');",
+							"     });",
+							"pm.test(\"Field banned is available\",function () {",
+							"     pm.expect('banned').to.have.string('banned');",
+							"     });",
+							"pm.test(\"Field suspended is available\",function () {",
+							"     pm.expect('suspended').to.have.string('suspended');",
+							"     });",
+							"pm.test(\"Field verified is available\",function () {",
+							"     pm.expect('verified').to.have.string('verified');",
+							"     });",
+							"pm.test(\"Field newsletters is available\",function () {",
+							"     pm.expect('newsletters').to.have.string('newsletters');",
+							"     });",
+							"pm.test(\"Field survey is available\",function () {",
+							"     pm.expect('survey').to.have.string('survey');",
+							"     });",
+							"pm.test(\"Field badge is available\",function () {",
+							"     pm.expect('badge').to.have.string('badge');",
+							"     });",
+							"pm.test(\"Field email is available\",function () {",
+							"     pm.expect('email').to.have.string('email');",
+							"     });",
+							"pm.test(\"Field password is available\",function () {",
+							"     pm.expect('password').to.have.string('password');",
+							"     });",
+							"pm.test(\"Field last online is available\",function () {",
+							"     pm.expect('lastOnline').to.have.string('lastOnline');",
+							"     });",
+							"pm.test(\"Field Joining date is available\",function () {",
+							"     pm.expect('joindate').to.have.string('joindate');",
+							"     });",
+							"pm.test(\"Field Survey gizmo is available\",function () {",
+							"     pm.expect('surveyGizmo').to.have.string('surveyGizmo');",
+							"     });",
+							"pm.test(\"Field created on is available\",function () {",
+							"     pm.expect('createdOn').to.have.string('createdOn');",
+							"     });",
+							"pm.test(\"Field updated on is available\",function () {",
+							"     pm.expect('updatedOn').to.have.string('updatedOn');",
+							"     });",
+							"pm.test(\"Field slug is available\",function () {",
+							"     pm.expect('slug').to.have.string('slug');",
+							"     });",
+							"pm.test(\"Field referral is available\",function () {",
+							"     pm.expect('referral').to.have.string('referral');",
+							"     });",
+							"pm.test(\"Field picture is available\",function () {",
+							"     pm.expect('picture').to.have.string('picture');",
+							"     });",
+							"pm.test(\"Field id is available\",function () {",
+							"     pm.expect('_id').to.have.string('_id');",
+							"     });",
+							"pm.test(\"Field full name is available\",function () {",
+							"     pm.expect('fullName').to.have.string('fullName');",
+							"     });",
+							"pm.test(\"Field age is available\",function () {",
+							"     pm.expect('age').to.have.string('age');",
+							"     });",
+							"pm.test(\"Field point wallet is available\",function () {",
+							"     pm.expect('pointWallet').to.have.string('pointWallet');",
+							"     });",
+							"pm.test(\"Field token is available\",function () {",
+							"     pm.expect('token').to.have.string('token');",
+							"     });",
+							"pm.test(\"Field redeemed point is available\",function () {",
+							"     pm.expect('redeemedPoint').to.have.string('redeemedPoint');",
+							"     });",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"poiqsauya@gmail.com\",\n  \"username\": \"poiqsauya@gmail.com\",\n  \"password\": \"Solution2019!\"\n}"
+				},
+				"url": {
+					"raw": "https://dev.prod.lift.co/api/users/register",
+					"protocol": "https",
+					"host": [
+						"dev",
+						"prod",
+						"lift",
+						"co"
+					],
+					"path": [
+						"api",
+						"users",
+						"register"
+					]
+				},
+				"description": "User Registration"
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
